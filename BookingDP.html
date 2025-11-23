@@ -1,0 +1,191 @@
+<!-- BookingDP.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment - Smile Dental Clinic</title>
+  <link rel="stylesheet" href="DentalProject.css">
+  <style>
+    /* Booking Form Styles */
+    .booking-section {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #e8faff;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      font-family: Arial, sans-serif;
+    }
+    .booking-section h2 {
+      text-align: center;
+      color: #2ec4b6;
+      margin-bottom: 20px;
+    }
+    .booking-section label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    .booking-section input, .booking-section select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .booking-section input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+    .booking-section button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #7ddfff, #2ec4b6);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .booking-section button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    #successMsg {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">SMILE CLINIC ✨</div>
+  <ul class="nav-links">
+    <li><a href="DentalProject.html">Home 🏠</a></li>
+    <li><a href="DoctorsDP.html">Our Doctors 🧑‍⚕️</a></li>
+    <li><a href="ServiceDP.html">Our Services 💎</a></li>
+    <li><a href="EmergencyDP.html" class="emergency-btn">Emergency 🚨</a></li>
+    <li><a href="BookingDP.html">Book Now 📅</a></li>
+    <li><a href="HistoryDP.html">Patient History 🗂️</a></li>
+  </ul>
+</nav> 
+
+<section class="booking-section">
+  <h2>Book Your Appointment 🦷</h2>
+
+  <label for="date">Select Date 📅:</label>
+  <input type="date" id="date" required>
+
+  <label for="doctor">Select Doctor 🧑‍⚕️:</label>
+  <select id="doctor" required>
+    <option disabled selected>Select Doctor</option>
+    <option>Dr. Ahmed Amer</option>
+    <option>Dr. Sarah Hany</option>
+    <option>Dr. Youmna Galeb</option>
+    <option>Dr. Mai Mansour</option>
+    <option>Dr. Youssef Kamel</option>
+  </select>
+
+  <label for="time">Select Time ⏰:</label>
+  <select id="time" required>
+    <option disabled selected>Select Time</option>
+  </select>
+
+  <label for="name">Full Name:</label>
+  <input type="text" id="name" placeholder="John Doe" required>
+
+  <label for="phone">Phone Number:</label>
+  <input type="tel" id="phone" placeholder="010XXXXXXXX" required>
+
+  <label for="age">Age:</label>
+  <input type="number" id="age" placeholder="25" required>
+
+  <label for="gender">Gender:</label>
+  <select id="gender" required>
+    <option disabled selected>Select Gender</option>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+
+  <label><input type="checkbox" id="consent"> I want to create a clinic history 📘</label>
+
+  <div id="loginInfo" style="display:none;">
+    <label for="username">Choose Username:</label>
+    <input type="text" id="username" placeholder="Username">
+    <label for="password">Choose Password:</label>
+    <input type="password" id="password" placeholder="Password">
+  </div>
+
+  <button id="bookBtn">Book Now ✅</button>
+  <p id="successMsg"></p>
+</section>
+
+<script>
+const doctorTimes = {
+  "Dr. Ahmed Amer": ["12:00","13:00","14:00","15:00"],
+  "Dr. Sarah Hany": ["12:00","14:00","16:00"],
+  "Dr. Youmna Galeb": ["13:00","15:00"],
+  "Dr. Mai Mansour": ["12:00","13:00","14:00"],
+  "Dr. Youssef Kamel": ["14:00","15:00","16:00"]
+};
+
+const doctorSelect = document.getElementById("doctor");
+const timeSelect = document.getElementById("time");
+const consentCheckbox = document.getElementById("consent");
+const loginInfo = document.getElementById("loginInfo");
+const bookBtn = document.getElementById("bookBtn");
+const successMsg = document.getElementById("successMsg");
+
+// Update times dynamically when doctor changes
+doctorSelect.addEventListener("change", function() {
+  const times = doctorTimes[doctorSelect.value];
+  timeSelect.innerHTML = '<option disabled selected>Select Time</option>';
+  times.forEach(time => {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    timeSelect.appendChild(option);
+  });
+});
+
+// Show login fields if consent is checked
+consentCheckbox.addEventListener("change", function() {
+  loginInfo.style.display = consentCheckbox.checked ? "block" : "none";
+});
+
+// Book appointment
+bookBtn.addEventListener("click", function() {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const age = document.getElementById("age").value;
+  const gender = document.getElementById("gender").value;
+  const doctor = doctorSelect.value;
+  const time = timeSelect.value;
+  const date = document.getElementById("date").value;
+
+  if(!name || !phone || !age || !gender || !doctor || !time || !date) {
+    alert("Please fill all required fields!");
+    return;
+  }
+
+  let userInfo = "";
+  if(consentCheckbox.checked) {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    if(!username || !password) {
+      alert("Please create a username and password for your clinic history.");
+      return;
+    }
+    userInfo = `\nUsername: ${username}\nPassword: ${password}`;
+  }
+
+  successMsg.textContent = `✅ Booking Successful!\nPatient: ${name}\nDoctor: ${doctor}\nDate: ${date}\nTime: ${time}${userInfo}`;
+});
+</script>
